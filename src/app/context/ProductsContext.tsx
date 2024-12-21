@@ -11,10 +11,12 @@ import {
 
 interface ProductContextType {
   products: Product[];
-  addProduct: (product: Omit<Product, "id">) => void;
-  deleteProduct: (productId: number) => void;
+  addProduct: (product: Omit<Product, "id">) => boolean;
+  deleteProduct: (productId: number) => boolean;
   fetchProducts: () => void;
   filterProducts: (query: string) => void;
+  openProductForm: boolean;
+  setOpenProductForm: (open: boolean) => void;
 }
 
 const ProductContext = createContext<ProductContextType | undefined>(undefined);
@@ -27,6 +29,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({
   children,
 }) => {
   const [products, setProducts] = React.useState<Product[]>([]);
+  const [openProductForm, setOpenProductForm] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     fetchProducts();
@@ -42,13 +45,26 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({
   };
 
   const addProduct = async (newProduct: Omit<Product, "id">) => {
-    await createItem(newProduct);
-    fetchProducts();
+    try {
+      await createItem(newProduct);
+      fetchProducts();
+    } catch (e: unknown) {
+      console.error(e instanceof Error ? e.message : "error");
+      return false;
+    }
+
+    return true;
   };
 
   const deleteProduct = async (id: number) => {
-    await deleteItem(id);
-    fetchProducts();
+    try {
+      await deleteItem(id);
+      fetchProducts();
+    } catch (e: unknown) {
+      console.error(e instanceof Error ? e.message : "error");
+      return false;
+    }
+    return true;
   };
 
   const filterProducts = async (query: string) => {
@@ -71,6 +87,8 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({
         deleteProduct,
         fetchProducts,
         filterProducts,
+        openProductForm,
+        setOpenProductForm,
       }}
     >
       {children}

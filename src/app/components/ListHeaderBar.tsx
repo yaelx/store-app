@@ -26,20 +26,12 @@ const AddButton = styled(Button)(({ theme }) => ({
 }));
 
 const ListHeaderBar: React.FC = () => {
-  const { addProduct, filterProducts } = useProductContext();
+  const { setOpenProductForm, filterProducts } = useProductContext();
   const [input, setInput] = useState<string>("");
   const [sort, setSort] = useState<string>("Name");
 
   const handleAddProduct = () => {
-    const newProduct = {
-      name: "New Product",
-      description: "Description of the new product.",
-      creation_date: new Intl.DateTimeFormat().format(new Date()),
-      price: 19.99,
-      imageUrl: "https://via.placeholder.com/150",
-    };
-
-    addProduct(newProduct);
+    setOpenProductForm(true);
   };
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const query = event.target.value.toLowerCase();
@@ -65,7 +57,7 @@ const ListHeaderBar: React.FC = () => {
         justifyContent: "space-between",
       }}
     >
-      <AddButton sx={{ boxShadow: 3 }} onClick={() => handleAddProduct()}>
+      <AddButton sx={{ boxShadow: 3 }} onClick={handleAddProduct}>
         Add
       </AddButton>
 
@@ -106,9 +98,9 @@ const ListHeaderBar: React.FC = () => {
           label="Sort"
           onChange={handleSortChange}
         >
-          <MenuItem value={10}>Name</MenuItem>
-          <MenuItem value={20}>Recently added</MenuItem>
-          <MenuItem value={30}>Price</MenuItem>
+          <MenuItem value={"Name"}>Name</MenuItem>
+          <MenuItem value={"Recently added"}>Recently added</MenuItem>
+          <MenuItem value={"Price"}>Price</MenuItem>
         </Select>
       </FormControl>
     </Box>

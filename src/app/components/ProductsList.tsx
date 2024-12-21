@@ -14,7 +14,7 @@ const ProductList: React.FC = () => {
   };
 
   return (
-    <List sx={{ width: "100%", bgcolor: "background.paper" }}>
+    <List sx={{ width: "100%" }}>
       {products.map((product) => (
         <ListItem key={product.id} alignItems="flex-start">
           <ProductItem
