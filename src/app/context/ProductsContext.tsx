@@ -11,7 +11,7 @@ import {
 
 interface ProductContextType {
   products: Product[];
-  addProduct: (product: Product) => void;
+  addProduct: (product: Omit<Product, "id">) => void;
   deleteProduct: (productId: number) => void;
   fetchProducts: () => void;
 }
@@ -41,15 +41,15 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({
   };
 
   // Add a product and update context and local storage
-  const addProduct = async (newProduct: Product) => {
+  const addProduct = async (newProduct: Omit<Product, "id">) => {
     await createItem(newProduct);
     fetchProducts();
   };
 
   // Delete a product and update context and local storage
   const deleteProduct = async (id: number) => {
-    const updatedProducts = await deleteItem(id);
-    setProducts(updatedProducts);
+    await deleteItem(id);
+    fetchProducts();
   };
 
   return (

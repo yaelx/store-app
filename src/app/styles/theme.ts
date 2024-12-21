@@ -1,6 +1,6 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme } from "@mui/material/styles";
 
-declare module '@mui/material/styles' {
+declare module "@mui/material/styles" {
   interface Theme {
     button: {
       delete: string;
@@ -19,7 +19,7 @@ declare module '@mui/material/styles' {
 export const theme = createTheme({
   palette: {
     primary: {
-      main: "#6fa6f7", 
+      main: "#6fa6f7",
     },
     secondary: {
       main: "#ced1cd",
@@ -28,7 +28,11 @@ export const theme = createTheme({
       default: "#F4F4F4", // Light Grey
     },
     text: {
-      primary: '#333333', // Dark Text
+      primary: "#333333", // Dark Text
+    },
+    common: {
+      black: "#000000",
+      white: "#ffffff",
     },
   },
   typography: {
@@ -49,4 +53,3 @@ export const theme = createTheme({
     },
   },
 });
-
