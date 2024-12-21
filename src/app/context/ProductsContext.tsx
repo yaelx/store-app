@@ -14,6 +14,7 @@ interface ProductContextType {
   addProduct: (product: Omit<Product, "id">) => void;
   deleteProduct: (productId: number) => void;
   fetchProducts: () => void;
+  filterProducts: (query: string) => void;
 }
 
 const ProductContext = createContext<ProductContextType | undefined>(undefined);
@@ -40,21 +41,37 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({
     }
   };
 
-  // Add a product and update context and local storage
   const addProduct = async (newProduct: Omit<Product, "id">) => {
     await createItem(newProduct);
     fetchProducts();
   };
 
-  // Delete a product and update context and local storage
   const deleteProduct = async (id: number) => {
     await deleteItem(id);
     fetchProducts();
   };
 
+  const filterProducts = async (query: string) => {
+    if (query === "") {
+      fetchProducts();
+      return;
+    }
+    const data = await getItems();
+    const filteredList = data.filter((product) =>
+      product.name.toLowerCase().includes(query)
+    );
+    setProducts(filteredList);
+  };
+
   return (
     <ProductContext.Provider
-      value={{ products, addProduct, deleteProduct, fetchProducts }}
+      value={{
+        products,
+        addProduct,
+        deleteProduct,
+        fetchProducts,
+        filterProducts,
+      }}
     >
       {children}
     </ProductContext.Provider>

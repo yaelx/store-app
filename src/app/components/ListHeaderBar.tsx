@@ -26,7 +26,7 @@ const AddButton = styled(Button)(({ theme }) => ({
 }));
 
 const ListHeaderBar: React.FC = () => {
-  const { addProduct } = useProductContext();
+  const { addProduct, filterProducts } = useProductContext();
   const [input, setInput] = useState<string>("");
   const [sort, setSort] = useState<string>("Name");
 
@@ -41,9 +41,11 @@ const ListHeaderBar: React.FC = () => {
 
     addProduct(newProduct);
   };
-  const handleInput = (e) => {
-    console.log(e.target.value);
-    setInput(e.target.value.toLowerCase());
+  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const query = event.target.value.toLowerCase();
+    console.log("search for: ", query);
+    setInput(query);
+    filterProducts(query);
   };
 
   const handleSortChange = (event: SelectChangeEvent) => {
@@ -67,14 +69,23 @@ const ListHeaderBar: React.FC = () => {
         Add
       </AddButton>
 
-      <form style={{ display: "flex", alignItems: "center" }}>
+      <Box
+        component="form"
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          "& .MuiTextField-root": { width: "25ch" },
+          alignItems: "center",
+        }}
+      >
         <TextField
-          id="search-bar"
+          id="products-search-bar"
           className="text"
-          onInput={handleInput}
-          label="Search by name"
+          onChange={handleInput}
+          value={input}
           variant="outlined"
           placeholder="Search by name"
+          margin="normal"
           size="small"
           sx={{
             width: 350,
@@ -84,7 +95,7 @@ const ListHeaderBar: React.FC = () => {
         <IconButton type="submit" aria-label="search">
           <SearchIcon style={{ fill: "blue" }} />
         </IconButton>
-      </form>
+      </Box>
 
       <FormControl sx={{ m: 1, width: 120, height: 30 }} size="small">
         <InputLabel id="demo-simple-select-label">sort</InputLabel>

@@ -22,10 +22,17 @@ export default function Home() {
         >
           <AppHeader />
 
-          <main className={styles.main}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              width: "100%",
+              marginTop: 10,
+            }}
+          >
             <ListHeaderBar />
             <ProductList />
-          </main>
+          </Box>
           <footer className={styles.footer}></footer>
         </Box>
       </ProductProvider>
