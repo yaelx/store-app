@@ -1,0 +1,204 @@
+{
+    "products": [
+  {
+    "id": 1,
+    "name": "Whole Wheat Bread",
+    "description": "Freshly baked whole wheat bread, perfect for sandwiches.",
+    "price": 3.5,
+    "creation_date": "2024-01-01",
+    "url": "https://images.unsplash.com/photo-1537200275355-4f0c0714f777?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+  },
+  {
+    "id": 2,
+    "name": "Cheddar Cheese",
+    "description": "A block of aged cheddar cheese, rich and creamy.",
+    "price": 4.75,
+    "creation_date": "2024-01-02",
+    "url": "https://unsplash.com/photos/a-wooden-cutting-board-topped-with-tomatoes-and-cheese-JW55icjCsg4"
+  },
+  {
+    "id": 3,
+    "name": "Organic Apples",
+    "description": "Crisp and sweet organic apples, great for snacking.",
+    "price": 5.99,
+    "creation_date": "2024-01-03",
+    "url": "https://unsplash.com/photos/a-pile-of-red-and-yellow-apples-in-a-bin-rkTYUGTkGtg"
+  },
+  {
+    "id": 4,
+    "name": "Ground Coffee",
+    "description": "Medium roast coffee for a smooth and balanced cup.",
+    "price": 8.99,
+    "creation_date": "2024-01-04",
+    "url": "https://unsplash.com/photos/a-pile-of-red-and-yellow-apples-in-a-bin-rkTYUGTkGtg"
+  },
+  {
+    "id": 5,
+    "name": "Peanut Butter",
+    "description": "Creamy peanut butter made with 100% peanuts.",
+    "price": 4.25,
+    "creation_date": "2024-01-05",
+    "url": "https://unsplash.com/photos/a-pile-of-red-and-yellow-apples-in-a-bin-rkTYUGTkGtg"
+  },
+  {
+    "id": 6,
+    "name": "Brown Rice",
+    "description": "Healthy and nutritious long-grain brown rice.",
+    "price": 2.75,
+    "creation_date": "2024-01-06",
+    "url": "https://unsplash.com/photos/a-pile-of-red-and-yellow-apples-in-a-bin-rkTYUGTkGtg"
+  },
+  {
+    "id": 7,
+    "name": "Greek Yogurt",
+    "description": "Thick and creamy Greek yogurt, high in protein.",
+    "price": 1.5,
+    "creation_date": "2024-01-07",
+    "url": "https://unsplash.com/photos/a-pile-of-red-and-yellow-apples-in-a-bin-rkTYUGTkGtg"
+  },
+  {
+    "id": 8,
+    "name": "Almond Milk",
+    "description": "Unsweetened almond milk, dairy-free and delicious.",
+    "price": 3.0,
+    "creation_date": "2024-01-08",
+    "url": "https://unsplash.com/photos/a-pile-of-red-and-yellow-apples-in-a-bin-rkTYUGTkGtg"
+  },
+  {
+    "id": 9,
+    "name": "Olive Oil",
+    "description": "Extra virgin olive oil, ideal for cooking and dressing.",
+    "price": 10.99,
+    "creation_date": "2024-01-09",
+    "url": "https://unsplash.com/photos/a-pile-of-red-and-yellow-apples-in-a-bin-rkTYUGTkGtg"
+  },
+  {
+    "id": 10,
+    "name": "Free-Range Eggs",
+    "description": "A dozen free-range eggs, rich in flavor and nutrients.",
+    "price": 4.5,
+    "creation_date": "2024-01-10",
+    "url": "https://unsplash.com/photos/a-pile-of-red-and-yellow-apples-in-a-bin-rkTYUGTkGtg"
+  },
+  {
+    "id": 11,
+    "name": "Honey",
+    "description": "Raw honey with a rich, natural sweetness.",
+    "price": 6.75,
+    "creation_date": "2024-01-11",
+    "url": "https://unsplash.com/photos/a-pile-of-red-and-yellow-apples-in-a-bin-rkTYUGTkGtg"
+  },
+  {
+    "id": 12,
+    "name": "Spaghetti Pasta",
+    "description": "Classic spaghetti made from 100% durum wheat.",
+    "price": 2.0,
+    "creation_date": "2024-01-12",
+    "url": "https://images.unsplash.com/photo-1561381033-62d342201f3a"
+  },
+  {
+    "id": 13,
+    "name": "Tomato Sauce",
+    "description": "Rich and flavorful tomato sauce, perfect for pasta.",
+    "price": 2.5,
+    "creation_date": "2024-01-13",
+    "url": "https://images.unsplash.com/photo-1571792286889-83a86d575f9b"
+  },
+  {
+    "id": 14,
+    "name": "Frozen Peas",
+    "description": "Sweet and tender frozen peas, easy to prepare.",
+    "price": 1.99,
+    "creation_date": "2024-01-14",
+    "url": "https://images.unsplash.com/photo-1561950215-71f52f90588f"
+  },
+  {
+    "id": 15,
+    "name": "Chicken Breast",
+    "description": "Boneless, skinless chicken breast, high in protein.",
+    "price": 7.5,
+    "creation_date": "2024-01-15",
+    "url": "https://images.unsplash.com/photo-1582839532070-232a6a949b18"
+  },
+  {
+    "id": 16,
+    "name": "Dark Chocolate",
+    "description": "Rich and smooth dark chocolate, 70% cocoa.",
+    "price": 3.99,
+    "creation_date": "2024-01-16",
+    "url": "https://images.unsplash.com/photo-1567641307-7437ed4935e2"
+  },
+  {
+    "id": 17,
+    "name": "Canned Tuna",
+    "description": "Canned tuna in water, perfect for salads and sandwiches.",
+    "price": 2.75,
+    "creation_date": "2024-01-17",
+    "url": "https://images.unsplash.com/photo-1585205041480-b21fd8ef77b6"
+  },
+  {
+    "id": 18,
+    "name": "Potato Chips",
+    "description": "Crispy potato chips, lightly salted for flavor.",
+    "price": 1.5,
+    "creation_date": "2024-01-18",
+    "url": "https://images.unsplash.com/photo-1562952793-1d7b8bc4bb42"
+  },
+  {
+    "id": 19,
+    "name": "Baking Flour",
+    "description": "All-purpose baking flour, ideal for cakes and bread.",
+    "price": 3.25,
+    "creation_date": "2024-01-19",
+    "url": "https://images.unsplash.com/photo-1584903478307-4645c4312710"
+  },
+  {
+    "id": 20,
+    "name": "Orange Juice",
+    "description": "Fresh orange juice with no added sugar.",
+    "price": 3.99,
+    "creation_date": "2024-01-20",
+    "url": "https://images.unsplash.com/photo-1600981296874-0d22f4c1c80f"
+  },
+  {
+    "id": 21,
+    "name": "Mozzarella Cheese",
+    "description": "Soft and creamy mozzarella cheese, great for pizzas.",
+    "price": 5.0,
+    "creation_date": "2024-01-21",
+    "url": "https://images.unsplash.com/photo-1600923562011-10660a8b9cc7"
+  },
+  {
+    "id": 22,
+    "name": "Avocados",
+    "description": "Ripe avocados, perfect for guacamole or toast.",
+    "price": 1.99,
+    "creation_date": "2024-01-22",
+    "url": "https://images.unsplash.com/photo-1572645470702-25d90588e5d1"
+  },
+  {
+    "id": 23,
+    "name": "Butter",
+    "description": "Creamy unsalted butter, great for cooking and baking.",
+    "price": 2.5,
+    "creation_date": "2024-01-23",
+    "url": "https://images.unsplash.com/photo-1555685811-82e34e8b6e1b"
+  },
+  {
+    "id": 24,
+    "name": "Brown Sugar",
+    "description": "Soft and moist brown sugar, ideal for baking.",
+    "price": 2.0,
+    "creation_date": "2024-01-24",
+    "url": "https://images.unsplash.com/photo-1557764735-713dc7f55959"
+  },
+  {
+    "id": 25,
+    "name": "Ice Cream",
+    "description": "Creamy vanilla ice cream made with real milk.",
+    "price": 4.5,
+    "creation_date": "2024-01-25",
+    "url": "https://images.unsplash.com/photo-1560865043-ff2b7de54d71"
+  }
+]
+}
