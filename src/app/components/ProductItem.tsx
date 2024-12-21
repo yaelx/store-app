@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { useTheme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -15,11 +15,14 @@ interface ProductItemProps {
   deleteProduct: () => void;
 }
 
+const DeleteButton = styled(Button)(({ theme }) => ({
+  backgroundColor: theme.button.delete,
+}));
+
 const ProductItem: React.FC<ProductItemProps> = ({
   product,
   deleteProduct,
 }) => {
-  const theme = useTheme();
   //   <p>Price: ${product.price.toFixed(2)}</p>
   // <p>Created on: {product.creation_date}</p>
 
@@ -52,14 +55,13 @@ const ProductItem: React.FC<ProductItemProps> = ({
           </Typography>
         </CardContent>
         <CardActions>
-          <Button
+          <DeleteButton
             variant="contained"
             size="small"
-            color="primary"
             onClick={deleteProduct}
           >
             Delete
-          </Button>
+          </DeleteButton>
         </CardActions>
       </Box>
     </Card>

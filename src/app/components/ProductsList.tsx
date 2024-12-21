@@ -11,8 +11,7 @@ const ProductList: React.FC = () => {
   const { products } = useProductContext();
 
   const handleDelete = (product: Product) => {
-    console.log("try delete", product);
-    // deleteProduct(product.id); // todo: add
+    deleteProduct(product.id);
   };
 
   return (
