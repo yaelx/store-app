@@ -5,13 +5,27 @@ import ListItem from "@mui/material/ListItem";
 import { useProductContext } from "../context/ProductsContext";
 import ProductItem from "./ProductItem";
 import { Product } from "../types/Product";
-import { deleteProduct } from "../utils/api";
 
 const ProductList: React.FC = () => {
-  const { products } = useProductContext();
+  const { products, deleteProduct, fetchProducts, addProduct } =
+    useProductContext();
+
+  // const handleAddProduct = () => {
+  //   const newProduct = {
+  //     id: Date.now(), // Generate a unique ID
+  //     name: "New Product",
+  //     description: "Description of the new product.",
+  //     price: 19.99,
+  //     imageUrl: "https://via.placeholder.com/150",
+  //   };
+
+  //   addProduct(newProduct);
+  //   fetchProducts();
+  // };
 
   const handleDelete = (product: Product) => {
     deleteProduct(product.id);
+    fetchProducts();
   };
 
   return (

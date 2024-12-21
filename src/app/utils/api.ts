@@ -15,7 +15,7 @@ const generateUniqueId = () => {
   return Date.now();
 };
 
-export const getProducts = async (): Promise<Product[]> => {
+export const getItems = async (): Promise<Product[]> => {
     const products = getProductsFromLocalStorage();
     if (products.length > 0) {
         return products;
@@ -25,17 +25,17 @@ export const getProducts = async (): Promise<Product[]> => {
     return response.data;
 };
 
-export const getProductById = async (id: number): Promise<Product|undefined> => {
+export const getItemById = async (id: number): Promise<Product|undefined> => {
     // const response = await api.get<Product>(`/products/${id}`);
     // return response.data;
-    const products = await getProducts();
+    const products = await getItems();
     const product = products.find((product) => product.id !== id);
     return product;
 };
 
 // Add a new product
-export const createProduct = async (product: Omit<Product, "id">): Promise<Product> => {
-    const products = await getProducts();
+export const createItem = async (product: Omit<Product, "id">): Promise<Product> => {
+    const products = await getItems();
     const newProduct = {id: generateUniqueId(), ...product};
     const updatedProducts = [...products, newProduct];
     setProductsToLocalStorage(updatedProducts);
@@ -45,19 +45,19 @@ export const createProduct = async (product: Omit<Product, "id">): Promise<Produ
 };
 
 // Update a product by ID
-export const updateProduct = async (id: number, updatedProduct: Partial<Product>): Promise<Product> => {
+export const updateItem = async (id: number, updatedProduct: Partial<Product>): Promise<Product> => {
     // const response = await api.put<Product>(`/products/${id}`, updatedProduct);
     // return response.data;
-    const product = await getProductById(id);
+    const product = await getItemById(id);
     const updated = {...product, updatedProduct} as Product;
     return updated;
 };
 
 // Delete a product by ID
-export const deleteProduct = async (id: number): Promise<void> => {
-    console.log("try delete", id);
+export const deleteItem = async (id: number): Promise<Product[]> => {
     // await api.delete(`/products/${id}`);
-    const products = await getProducts();
+    const products = await getItems();
     const updatedProducts = products.filter((product) => product.id !== id);
     setProductsToLocalStorage(updatedProducts);
+    return updatedProducts;
 };

@@ -1,10 +1,19 @@
 "use client";
 import React, { createContext, useContext, ReactNode } from "react";
 import { Product } from "../types/Product";
-import { getProducts } from "../utils/api";
+import {
+  updateItem,
+  deleteItem,
+  createItem,
+  getItemById,
+  getItems,
+} from "../utils/api";
 
 interface ProductContextType {
   products: Product[];
+  addProduct: (product: Product) => void;
+  deleteProduct: (productId: number) => void;
+  fetchProducts: () => void;
 }
 
 const ProductContext = createContext<ProductContextType | undefined>(undefined);
@@ -19,20 +28,34 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({
   const [products, setProducts] = React.useState<Product[]>([]);
 
   React.useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const data = await getProducts();
-        setProducts(data);
-      } catch (error) {
-        console.error("Error: failed to fetch products:", error);
-      }
-    };
-
     fetchProducts();
   }, []);
 
+  const fetchProducts = async () => {
+    try {
+      const data = await getItems();
+      setProducts(data);
+    } catch (error) {
+      console.error("Error: failed to fetch products:", error);
+    }
+  };
+
+  // Add a product and update context and local storage
+  const addProduct = async (newProduct: Product) => {
+    await createItem(newProduct);
+    fetchProducts();
+  };
+
+  // Delete a product and update context and local storage
+  const deleteProduct = async (id: number) => {
+    const updatedProducts = await deleteItem(id);
+    setProducts(updatedProducts);
+  };
+
   return (
-    <ProductContext.Provider value={{ products }}>
+    <ProductContext.Provider
+      value={{ products, addProduct, deleteProduct, fetchProducts }}
+    >
       {children}
     </ProductContext.Provider>
   );
