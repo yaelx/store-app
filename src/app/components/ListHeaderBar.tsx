@@ -26,10 +26,9 @@ const AddButton = styled(Button)(({ theme }) => ({
 }));
 
 const ListHeaderBar: React.FC = () => {
-  const { setOpenProductForm, filterProducts, sortProducts } =
+  const { setOpenProductForm, filterProducts, sortProducts, sort } =
     useProductContext();
   const [input, setInput] = useState<string>("");
-  const [sort, setSort] = useState<string>("Name");
 
   const handleAddProduct = () => {
     setOpenProductForm(true);
@@ -43,7 +42,6 @@ const ListHeaderBar: React.FC = () => {
 
   const handleSortChange = (event: SelectChangeEvent) => {
     const sortType = event.target.value as string;
-    setSort(sortType);
     sortProducts(sortType);
   };
 

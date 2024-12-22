@@ -22,6 +22,7 @@ interface ProductContextType {
   editProduct: (product: { id: number } & Partial<Product>) => void;
   draftProduct: ({ id: number } & Partial<Product>) | undefined;
   sortProducts: (sort: string) => void;
+  sort: string;
 }
 
 const ProductContext = createContext<ProductContextType | undefined>(undefined);
@@ -38,11 +39,10 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({
   const [draftProduct, setdraftProduct] = React.useState<
     { id: number } & Partial<Product>
   >();
-  const [sort, setSort] = React.useState<string>();
+  const [sort, setSort] = React.useState<string>("Name");
 
   React.useEffect(() => {
     fetchProducts();
-    sortProducts("Name");
   }, []);
 
   const editProduct = (product: { id: number } & Partial<Product>) => {
@@ -52,6 +52,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({
 
   const fetchProducts = async () => {
     const data = await getItems();
+    _sortProducts(sort, data);
     setProducts(data);
   };
 
@@ -86,22 +87,27 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({
     setProducts(filteredList);
   };
 
-  const sortProducts = async (newsort: string) => {
+  const _sortProducts = (newsort: string, items: Product[]) => {
     setSort(newsort);
-    let sortedList = products;
+    let sortedList;
     switch (newsort) {
       case "Name":
-        sortedList = products.toSorted(sortByName);
+        sortedList = items.toSorted(sortByName);
         break;
       case "Date":
-        sortedList = products.toSorted(sortByDate);
+        sortedList = items.toSorted(sortByDate);
         break;
       case "Price":
-        sortedList = products.toSorted(sortByPrice);
+        sortedList = items.toSorted(sortByPrice);
         break;
       default:
+        sortedList = [...items];
     }
     setProducts(sortedList);
+  };
+
+  const sortProducts = (newsort: string) => {
+    _sortProducts(newsort, products);
   };
 
   return (
@@ -118,6 +124,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({
         editProduct,
         draftProduct,
         sortProducts,
+        sort,
       }}
     >
       {children}

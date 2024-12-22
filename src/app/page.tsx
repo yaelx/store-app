@@ -1,7 +1,7 @@
 "use client";
 import styles from "./page.module.css";
 import AppHeader from "./components/AppHeader";
-import { ProductProvider, useProductContext } from "./context/ProductsContext";
+import { ProductProvider } from "./context/ProductsContext";
 import ProductList from "./components/ProductsList";
 import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "./styles/theme";
