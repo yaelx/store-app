@@ -15,10 +15,16 @@ export default function Home() {
   return (
     <ThemeProvider theme={theme}>
       <ProductProvider>
-        <Box sx={{ flexGrow: 1, bgcolor: theme.palette.background.default }}>
+        <Box
+          sx={{
+            flexGrow: 1,
+            bgcolor: theme.palette.background.default,
+            width: "100%",
+          }}
+        >
           <AppHeader />
           <ProductFormProvider>
-            <Grid container spacing={3} sx={{ marginTop: 10 }}>
+            <Grid container spacing={3} sx={{ paddingTop: 10 }}>
               <Grid size={6}>
                 <StyledBox>
                   <ListHeaderBar />

@@ -132,7 +132,7 @@ const AppHeader = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                Settings
+                Account
               </IconButton>
             </Tooltip>
             <Menu
