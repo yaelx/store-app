@@ -13,10 +13,10 @@ export const sortByName = (a: Product, b: Product) => {
 export const sortByDate = (a: Product, b: Product) => {
     const aDate = new Date(a.creation_date); // dateObject
     const bDate = new Date(b.creation_date);
-  if (aDate.getTime() > bDate.getTime()) { // timestamp compare
+  if (aDate.getTime() < bDate.getTime()) { // timestamp compare
     return 1; 
   }
-  if (aDate.getTime() < bDate.getTime()) {
+  if (aDate.getTime() > bDate.getTime()) {
     return -1;
   }
   return 0;

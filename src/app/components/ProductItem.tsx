@@ -9,8 +9,7 @@ import Button from "@mui/material/Button";
 import { Product } from "../types/Product";
 import Grid from "@mui/material/Grid2";
 import { theme } from "../styles/theme";
-import { useProductContext } from "../context/ProductsContext";
-import { Link } from "@mui/material";
+import { useProductFormContext } from "../context/ProductFormContext";
 
 interface ProductItemProps {
   product: Product;
@@ -26,7 +25,7 @@ const ProductItem: React.FC<ProductItemProps> = ({
   product,
   deleteProduct,
 }) => {
-  const { editProduct } = useProductContext();
+  const { editProduct } = useProductFormContext();
 
   const handleEditClick = (event: React.MouseEvent) => {
     event.preventDefault(); // Prevent any default behavior (e.g., navigation or form submission)

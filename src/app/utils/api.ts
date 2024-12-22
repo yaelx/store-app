@@ -49,12 +49,10 @@ export const updateItem = async (id: number, updatedProduct: Partial<Product>): 
     // const response = await api.put<Product>(`/products/${id}`, updatedProduct);
     // return response.data;
     const productsCopy = await getItems();
-     console.log("Before update:", productsCopy);
     const idx = productsCopy.findIndex((product) => product.id === id);
     if (idx > -1){
     const updated = {...productsCopy[idx], ...updatedProduct} as Product;
     productsCopy[idx] = updated;
-    console.log("Updated product:", updated);
     setProductsToLocalStorage(productsCopy);
     return updated;
     }

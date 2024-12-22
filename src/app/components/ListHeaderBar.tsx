@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useProductContext } from "../context/ProductsContext";
+import { useProductFormContext } from "../context/ProductFormContext";
 
 const AddButton = styled(Button)(({ theme }) => ({
   backgroundColor: theme.button.add,
@@ -26,16 +27,16 @@ const AddButton = styled(Button)(({ theme }) => ({
 }));
 
 const ListHeaderBar: React.FC = () => {
-  const { setOpenProductForm, filterProducts, sortProducts, sort } =
-    useProductContext();
+  const { filterProducts, sortProducts, sort } = useProductContext();
+  const { setOpenProductForm, resetDraft } = useProductFormContext();
   const [input, setInput] = useState<string>("");
 
   const handleAddProduct = () => {
+    resetDraft();
     setOpenProductForm(true);
   };
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const query = event.target.value.toLowerCase();
-    console.log("search for: ", query);
     setInput(query);
     filterProducts(query);
   };

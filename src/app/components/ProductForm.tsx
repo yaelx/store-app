@@ -4,9 +4,7 @@ import { Formik, Form, Field, FieldProps } from "formik";
 import * as Yup from "yup";
 import {
   Box,
-  Button,
   CardMedia,
-  Dialog,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -19,6 +17,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useProductContext } from "../context/ProductsContext";
 import { Product } from "../types/Product";
 import ActionButton from "./ActionButton";
+import { useProductFormContext } from "../context/ProductFormContext";
 
 const StyledLabel = styled(InputLabel)(() => ({
   marginTop: "10px",
@@ -32,34 +31,39 @@ const productSchema = Yup.object().shape({
   description: Yup.string().min(2, "Too Short!").max(200, "Too Long!"),
   price: Yup.number().positive().required("Required"),
 });
+
 export const ProductForm = () => {
   const {
     addProduct,
-    openProductForm,
-    setOpenProductForm,
+    //openProductForm,
+    //setOpenProductForm,
     updateProduct,
-    draftProduct,
+    //draftProduct,
   } = useProductContext();
+
+  const { openProductForm, setOpenProductForm, draftProduct, resetDraft } =
+    useProductFormContext();
+
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const initialState = draftProduct || {
+  const initialState = {
     name: "",
     description: "",
     price: 0,
     creation_date: "",
   };
-  console.log("draftProduct: ", draftProduct);
 
   const saveProduct = async (
     values: Partial<Product> | Omit<Product, "id">
   ) => {
     console.log("add Product: ", values);
     if (draftProduct) {
-      updateProduct({
+      await updateProduct({
         id: draftProduct.id as number,
         ...values,
         url: values.url || draftProduct.url,
       } as Partial<Product> & { id: string });
+      resetDraft();
     } else {
       addProduct({
         ...values,
@@ -109,7 +113,8 @@ export const ProductForm = () => {
           </Box>
 
           <Formik
-            initialValues={initialState}
+            key={draftProduct ? draftProduct.id : "new"}
+            initialValues={draftProduct || initialState}
             validationSchema={productSchema}
             onSubmit={async (values, actions) => {
               console.log(values);
@@ -124,7 +129,7 @@ export const ProductForm = () => {
                 });
             }}
           >
-            {({ errors, touched, isSubmitting, setFieldValue }) => (
+            {({ errors, touched, isSubmitting, setFieldValue, resetForm }) => (
               <Form
                 style={{
                   paddingTop: 5,

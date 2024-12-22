@@ -10,11 +10,11 @@ interface ProductContextType {
   deleteProduct: (productId: number) => void;
   fetchProducts: () => void;
   filterProducts: (query: string) => void;
-  openProductForm: boolean;
-  setOpenProductForm: (open: boolean) => void;
+  //openProductForm: boolean;
+  //setOpenProductForm: (open: boolean) => void;
   updateProduct: (updatedProduct: { id: number } & Partial<Product>) => void;
-  editProduct: (product: { id: number } & Partial<Product>) => void;
-  draftProduct: ({ id: number } & Partial<Product>) | undefined;
+  //editProduct: (product: { id: number } & Partial<Product>) => void;
+  //draftProduct: ({ id: number } & Partial<Product>) | undefined;
   sortProducts: (sort: string) => void;
   sort: string;
 }
@@ -29,27 +29,27 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({
   children,
 }) => {
   const [products, setProducts] = React.useState<Product[]>([]);
-  const [openProductForm, setOpenProductForm] = React.useState<boolean>(false);
-  const [draftProduct, setdraftProduct] = React.useState<
-    { id: number } & Partial<Product>
-  >();
+  // const [openProductForm, setOpenProductForm] = React.useState<boolean>(false);
+  // const [draftProduct, setdraftProduct] = React.useState<
+  //   { id: number } & Partial<Product>
+  // >();
   const [sort, setSort] = React.useState<string>("Name");
-
-  React.useEffect(() => {
-    fetchProducts();
-  }, []);
-
-  const editProduct = (product: { id: number } & Partial<Product>) => {
-    console.log("Editing product:", product);
-    setdraftProduct(product);
-    setOpenProductForm(true);
-  };
 
   const fetchProducts = React.useCallback(async () => {
     const data = await getItems();
     const sortedData = _sortProducts(sort, data);
     setProducts(sortedData);
   }, [sort]);
+
+  React.useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
+
+  // const editProduct = (product: { id: number } & Partial<Product>) => {
+  //   console.log("Editing product:", product);
+  //   setdraftProduct(product);
+  //   setOpenProductForm(true);
+  // };
 
   const addProduct = React.useCallback(
     async (newProduct: Omit<Product, "id">) => {
@@ -62,7 +62,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({
   const updateProduct = React.useCallback(
     async (updatedProduct: { id: number } & Partial<Product>) => {
       await updateItem(updatedProduct.id, updatedProduct);
-      setdraftProduct(undefined);
+      //setdraftProduct(undefined);
       fetchProducts();
     },
     [fetchProducts]
@@ -109,11 +109,11 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({
       deleteProduct,
       fetchProducts,
       filterProducts,
-      openProductForm,
-      setOpenProductForm,
+      // openProductForm,
+      // setOpenProductForm,
       updateProduct,
-      editProduct,
-      draftProduct,
+      // editProduct,
+      // draftProduct,
       sortProducts,
       sort,
     }),
@@ -123,9 +123,9 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({
       deleteProduct,
       fetchProducts,
       filterProducts,
-      openProductForm,
+      // openProductForm,
       updateProduct,
-      draftProduct,
+      // draftProduct,
       sortProducts,
       sort,
     ]
