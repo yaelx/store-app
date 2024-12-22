@@ -25,3 +25,5 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - add real food products urls for DB
 - replace mock json with real database on firestore of mongoDB !
 - styling the app
+- add roting with views and cart handling
+- add menu links
