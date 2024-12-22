@@ -26,7 +26,8 @@ const AddButton = styled(Button)(({ theme }) => ({
 }));
 
 const ListHeaderBar: React.FC = () => {
-  const { setOpenProductForm, filterProducts } = useProductContext();
+  const { setOpenProductForm, filterProducts, sortProducts } =
+    useProductContext();
   const [input, setInput] = useState<string>("");
   const [sort, setSort] = useState<string>("Name");
 
@@ -41,7 +42,9 @@ const ListHeaderBar: React.FC = () => {
   };
 
   const handleSortChange = (event: SelectChangeEvent) => {
-    setSort(event.target.value as string);
+    const sortType = event.target.value as string;
+    setSort(sortType);
+    sortProducts(sortType);
   };
 
   return (
@@ -99,7 +102,7 @@ const ListHeaderBar: React.FC = () => {
           onChange={handleSortChange}
         >
           <MenuItem value={"Name"}>Name</MenuItem>
-          <MenuItem value={"Recently added"}>Recently added</MenuItem>
+          <MenuItem value={"Date"}>Recently added</MenuItem>
           <MenuItem value={"Price"}>Price</MenuItem>
         </Select>
       </FormControl>

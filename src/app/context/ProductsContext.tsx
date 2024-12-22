@@ -8,15 +8,20 @@ import {
   getItemById,
   getItems,
 } from "../utils/api";
+import { sortByDate, sortByName, sortByPrice } from "../utils/helperFunctions";
 
 interface ProductContextType {
   products: Product[];
-  addProduct: (product: Omit<Product, "id">) => boolean;
-  deleteProduct: (productId: number) => boolean;
+  addProduct: (product: Omit<Product, "id">) => void;
+  deleteProduct: (productId: number) => void;
   fetchProducts: () => void;
   filterProducts: (query: string) => void;
   openProductForm: boolean;
   setOpenProductForm: (open: boolean) => void;
+  updateProduct: (updatedProduct: { id: number } & Partial<Product>) => void;
+  editProduct: (product: { id: number } & Partial<Product>) => void;
+  draftProduct: ({ id: number } & Partial<Product>) | undefined;
+  sortProducts: (sort: string) => void;
 }
 
 const ProductContext = createContext<ProductContextType | undefined>(undefined);
@@ -30,41 +35,41 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({
 }) => {
   const [products, setProducts] = React.useState<Product[]>([]);
   const [openProductForm, setOpenProductForm] = React.useState<boolean>(false);
+  const [draftProduct, setdraftProduct] = React.useState<
+    { id: number } & Partial<Product>
+  >();
+  const [sort, setSort] = React.useState<string>();
 
   React.useEffect(() => {
     fetchProducts();
+    sortProducts("Name");
   }, []);
 
+  const editProduct = (product: { id: number } & Partial<Product>) => {
+    setdraftProduct(product);
+    setOpenProductForm(true);
+  };
+
   const fetchProducts = async () => {
-    try {
-      const data = await getItems();
-      setProducts(data);
-    } catch (error) {
-      console.error("Error: failed to fetch products:", error);
-    }
+    const data = await getItems();
+    setProducts(data);
   };
 
   const addProduct = async (newProduct: Omit<Product, "id">) => {
-    try {
-      await createItem(newProduct);
-      fetchProducts();
-    } catch (e: unknown) {
-      console.error(e instanceof Error ? e.message : "error");
-      return false;
-    }
+    await createItem(newProduct);
+    fetchProducts();
+  };
 
-    return true;
+  const updateProduct = async (
+    updatedProduct: { id: number } & Partial<Product>
+  ) => {
+    updateItem(updatedProduct.id, updatedProduct);
+    setdraftProduct(undefined);
   };
 
   const deleteProduct = async (id: number) => {
-    try {
-      await deleteItem(id);
-      fetchProducts();
-    } catch (e: unknown) {
-      console.error(e instanceof Error ? e.message : "error");
-      return false;
-    }
-    return true;
+    await deleteItem(id);
+    fetchProducts();
   };
 
   const filterProducts = async (query: string) => {
@@ -81,6 +86,24 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({
     setProducts(filteredList);
   };
 
+  const sortProducts = async (newsort: string) => {
+    setSort(newsort);
+    let sortedList = products;
+    switch (newsort) {
+      case "Name":
+        sortedList = products.toSorted(sortByName);
+        break;
+      case "Date":
+        sortedList = products.toSorted(sortByDate);
+        break;
+      case "Price":
+        sortedList = products.toSorted(sortByPrice);
+        break;
+      default:
+    }
+    setProducts(sortedList);
+  };
+
   return (
     <ProductContext.Provider
       value={{
@@ -91,6 +114,10 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({
         filterProducts,
         openProductForm,
         setOpenProductForm,
+        updateProduct,
+        editProduct,
+        draftProduct,
+        sortProducts,
       }}
     >
       {children}

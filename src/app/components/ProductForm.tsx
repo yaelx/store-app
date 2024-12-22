@@ -6,6 +6,8 @@ import {
   Box,
   Button,
   CardMedia,
+  Dialog,
+  IconButton,
   InputAdornment,
   InputLabel,
   OutlinedInput,
@@ -13,6 +15,7 @@ import {
   Typography,
   styled,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import { useProductContext } from "../context/ProductsContext";
 import { Product } from "../types/Product";
 import ActionButton from "./ActionButton";
@@ -29,20 +32,47 @@ const productSchema = Yup.object().shape({
   description: Yup.string().min(2, "Too Short!").max(200, "Too Long!"),
   price: Yup.number().positive().required("Required"),
 });
-
 export const ProductForm = () => {
-  const { addProduct, openProductForm, setOpenProductForm } =
-    useProductContext();
+  const {
+    addProduct,
+    openProductForm,
+    setOpenProductForm,
+    updateProduct,
+    draftProduct,
+  } = useProductContext();
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const initialState = !!draftProduct
+    ? draftProduct
+    : {
+        name: "",
+        description: "",
+        price: 0,
+        creation_date: "",
+      };
+  console.log(draftProduct);
 
-  const saveProduct = async (values: Omit<Product, "id">) => {
-    console.log("saveProduct: ", values);
-    addProduct({
-      ...values,
-      creation_date: new Intl.DateTimeFormat().format(new Date()),
-      url: "https://plus.unsplash.com/premium_photo-1700145523789-764a456e6034?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    });
+  const saveProduct = async (
+    values: Partial<Product> | Omit<Product, "id">
+  ) => {
+    console.log("add Product: ", values);
+    if (draftProduct) {
+      updateProduct({
+        id: draftProduct.id as number,
+        ...values,
+        url: values.url || draftProduct.url,
+      } as Partial<Product> & { id: string });
+    } else {
+      addProduct({
+        ...values,
+        creation_date: new Intl.DateTimeFormat().format(new Date()),
+        url: "https://plus.unsplash.com/premium_photo-1700145523789-764a456e6034?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      } as Omit<Product, "id">);
+    }
+  };
+
+  const onClose = () => {
+    setOpenProductForm(false);
   };
 
   return (
@@ -57,20 +87,29 @@ export const ProductForm = () => {
     >
       {openProductForm && (
         <Paper elevation={3}>
-          <Typography
-            variant="subtitle1"
-            sx={{ paddingLeft: 10, paddingTop: 2 }}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              width: "100%",
+              justifyContent: "space-between",
+            }}
           >
-            Add new product
-          </Typography>
+            <Typography
+              variant="subtitle1"
+              sx={{ paddingLeft: 3, paddingTop: 2 }}
+            >
+              {draftProduct
+                ? `${draftProduct.name} details`
+                : "Add a new product"}
+            </Typography>
+            <IconButton onClick={onClose}>
+              <CloseIcon />
+            </IconButton>
+          </Box>
 
           <Formik
-            initialValues={{
-              name: "",
-              description: "",
-              price: 0,
-              creation_date: "",
-            }}
+            initialValues={initialState}
             validationSchema={productSchema}
             onSubmit={async (values, actions) => {
               console.log(values);
@@ -95,7 +134,7 @@ export const ProductForm = () => {
                   width: "80%",
                   flex: 1,
                   flexDirection: "column",
-                  height: 420,
+                  height: 350,
                 }}
               >
                 <StyledLabel htmlFor="url">Image</StyledLabel>

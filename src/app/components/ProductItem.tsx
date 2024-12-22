@@ -9,6 +9,8 @@ import Button from "@mui/material/Button";
 import { Product } from "../types/Product";
 import Grid from "@mui/material/Grid2";
 import { theme } from "../styles/theme";
+import { useProductContext } from "../context/ProductsContext";
+import { Link } from "@mui/material";
 
 interface ProductItemProps {
   product: Product;
@@ -24,8 +26,20 @@ const ProductItem: React.FC<ProductItemProps> = ({
   product,
   deleteProduct,
 }) => {
+  const { editProduct } = useProductContext();
+
   return (
-    <Card sx={{ display: "flex", width: "100%" }}>
+    <Card
+      variant="outlined"
+      sx={{
+        display: "flex",
+        width: "100%",
+        "&:hover": {
+          boxShadow: "md",
+          borderColor: "neutral.outlinedHoverBorder",
+        },
+      }}
+    >
       <CardMedia
         component="img"
         sx={{
@@ -48,17 +62,25 @@ const ProductItem: React.FC<ProductItemProps> = ({
           }}
         >
           <Grid size={6}>
-            <Typography component="div" variant="subtitle1">
-              {product.name}
-            </Typography>
-            <Typography
-              variant="subtitle2"
-              component="div"
-              sx={{ color: "text.secondary" }}
+            <Link
+              underline="none"
+              href=""
+              sx={{ color: "text.tertiary" }}
+              onClick={() => editProduct(product)}
             >
-              {product.description}
-              <p>${product.price.toFixed(2)}</p>
-            </Typography>
+              <Typography component="div" variant="subtitle1">
+                {product.name}
+              </Typography>
+
+              <Typography
+                variant="subtitle2"
+                component="div"
+                sx={{ color: "text.secondary" }}
+              >
+                {product.description}
+                <p>${product.price.toFixed(2)}</p>
+              </Typography>
+            </Link>
           </Grid>
           <Grid
             size={6}
