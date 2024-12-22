@@ -73,8 +73,10 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({
       return;
     }
     const data = await getItems();
-    const filteredList = data.filter((product) =>
-      product.name.toLowerCase().includes(query)
+    const filteredList = data.filter(
+      (product) =>
+        product.name.toLowerCase().includes(query) ||
+        product.description?.toLowerCase().includes(query)
     );
     setProducts(filteredList);
   };

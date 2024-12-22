@@ -1,10 +1,11 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field, FieldProps } from "formik";
 import * as Yup from "yup";
 import {
   Box,
   Button,
+  CardMedia,
   InputAdornment,
   InputLabel,
   OutlinedInput,
@@ -14,17 +15,7 @@ import {
 } from "@mui/material";
 import { useProductContext } from "../context/ProductsContext";
 import { Product } from "../types/Product";
-
-const SaveButton = styled(Button)(({ theme }) => ({
-  backgroundColor: theme.button.add,
-  borderRadius: 5,
-  width: 50,
-  height: 35,
-  color: theme.palette.common.white,
-  fontWeight: 600,
-  cursor: "pointer",
-  alignSelf: "flex-end",
-}));
+import ActionButton from "./ActionButton";
 
 const StyledLabel = styled(InputLabel)(() => ({
   marginTop: "10px",
@@ -42,13 +33,15 @@ const productSchema = Yup.object().shape({
 export const ProductForm = () => {
   const { addProduct, openProductForm, setOpenProductForm } =
     useProductContext();
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   const saveProduct = async (values: Omit<Product, "id">) => {
     console.log("saveProduct: ", values);
     addProduct({
       ...values,
       creation_date: new Intl.DateTimeFormat().format(new Date()),
-      url: "https://images.pexels.com/photos/209206/pexels-photo-209206.jpeg?auto=compress&cs=tinysrgb&w=800",
+      url: "https://plus.unsplash.com/premium_photo-1700145523789-764a456e6034?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     });
   };
 
@@ -92,18 +85,57 @@ export const ProductForm = () => {
                 });
             }}
           >
-            {({ errors, touched, isSubmitting }) => (
+            {({ errors, touched, isSubmitting, setFieldValue }) => (
               <Form
                 style={{
                   paddingTop: 5,
+                  paddingBottom: 10,
                   paddingLeft: 20,
                   display: "flex",
                   width: "80%",
                   flex: 1,
                   flexDirection: "column",
-                  height: 400,
+                  height: 420,
                 }}
               >
+                <StyledLabel htmlFor="url">Image</StyledLabel>
+                <Field name="url">
+                  {() => (
+                    <Box
+                      sx={{ display: "flex", flexDirection: "row", gap: "6px" }}
+                    >
+                      <input
+                        type="file"
+                        id="imageUpload"
+                        accept="image/*"
+                        onChange={(event) => {
+                          const file = event.target.files?.[0];
+                          if (file) {
+                            setSelectedImage(file);
+                            const previewURL = URL.createObjectURL(file);
+                            setPreviewImage(previewURL);
+                            setFieldValue("url", previewURL);
+                          }
+                        }}
+                        style={{
+                          padding: "5px",
+                          border: "1px solid rgba(0, 0, 0, 0.6)",
+                          borderRadius: "5px",
+                          width: "100%",
+                        }}
+                      />
+                    </Box>
+                  )}
+                </Field>
+                {previewImage && (
+                  <CardMedia
+                    component="img"
+                    sx={{ width: 120, height: 100 }}
+                    image={previewImage}
+                    alt={"Preview"}
+                  />
+                )}
+
                 <StyledLabel htmlFor="name">Name</StyledLabel>
                 <Field name="name" />
                 {errors.name && touched.name ? <div>{errors.name}</div> : null}
@@ -140,14 +172,14 @@ export const ProductForm = () => {
                   )}
                 </Field>
 
-                <SaveButton
+                <ActionButton
                   color="primary"
                   variant="contained"
                   type="submit"
                   disabled={isSubmitting}
                 >
                   Save
-                </SaveButton>
+                </ActionButton>
               </Form>
             )}
           </Formik>
