@@ -28,23 +28,32 @@ const ProductItem: React.FC<ProductItemProps> = ({
 }) => {
   const { editProduct } = useProductContext();
 
+  const handleEditClick = (event: React.MouseEvent) => {
+    event.preventDefault(); // Prevent any default behavior (e.g., navigation or form submission)
+    editProduct(product);
+  };
+
   return (
     <Card
       variant="outlined"
       sx={{
         display: "flex",
         width: "100%",
+        cursor: "pointer",
         "&:hover": {
           boxShadow: "md",
           borderColor: "neutral.outlinedHoverBorder",
         },
       }}
+      onClick={handleEditClick}
     >
       <CardMedia
         component="img"
         sx={{
           width: 120,
           height: 100,
+          marginTop: "18px",
+          marginLeft: "16px",
           bgcolor: theme.palette.background.default,
         }}
         image={product.url}
@@ -62,25 +71,18 @@ const ProductItem: React.FC<ProductItemProps> = ({
           }}
         >
           <Grid size={6}>
-            <Link
-              underline="none"
-              href=""
-              sx={{ color: "text.tertiary" }}
-              onClick={() => editProduct(product)}
-            >
-              <Typography component="div" variant="subtitle1">
-                {product.name}
-              </Typography>
+            <Typography component="div" variant="subtitle1">
+              {product.name}
+            </Typography>
 
-              <Typography
-                variant="subtitle2"
-                component="div"
-                sx={{ color: "text.secondary" }}
-              >
-                {product.description}
-                <p>${product.price.toFixed(2)}</p>
-              </Typography>
-            </Link>
+            <Typography
+              variant="subtitle2"
+              component="div"
+              sx={{ color: "text.secondary" }}
+            >
+              {product.description}
+              <p>${product.price.toFixed(2)}</p>
+            </Typography>
           </Grid>
           <Grid
             size={6}
@@ -93,7 +95,10 @@ const ProductItem: React.FC<ProductItemProps> = ({
             <DeleteButton
               variant="contained"
               size="small"
-              onClick={deleteProduct}
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent the card click event from triggering
+                deleteProduct();
+              }}
             >
               Delete
             </DeleteButton>

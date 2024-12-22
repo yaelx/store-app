@@ -32,3 +32,20 @@ export const sortByPrice = (a: Product, b: Product) => {
   return 0;
 };
 
+export const _sortProducts = (newsort: string, items: Product[]) => {
+    let sortedList;
+    switch (newsort) {
+      case "Name":
+        sortedList = items.toSorted(sortByName);
+        break;
+      case "Date":
+        sortedList = items.toSorted(sortByDate);
+        break;
+      case "Price":
+        sortedList = items.toSorted(sortByPrice);
+        break;
+      default:
+        sortedList = [...items];
+    }
+    return sortedList;
+  };

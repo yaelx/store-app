@@ -1,14 +1,8 @@
 "use client";
 import React, { createContext, useContext, ReactNode } from "react";
 import { Product } from "../types/Product";
-import {
-  updateItem,
-  deleteItem,
-  createItem,
-  getItemById,
-  getItems,
-} from "../utils/api";
-import { sortByDate, sortByName, sortByPrice } from "../utils/helperFunctions";
+import { updateItem, deleteItem, createItem, getItems } from "../utils/api";
+import { _sortProducts } from "../utils/helperFunctions";
 
 interface ProductContextType {
   products: Product[];
@@ -46,89 +40,99 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({
   }, []);
 
   const editProduct = (product: { id: number } & Partial<Product>) => {
+    console.log("Editing product:", product);
     setdraftProduct(product);
     setOpenProductForm(true);
   };
 
-  const fetchProducts = async () => {
+  const fetchProducts = React.useCallback(async () => {
     const data = await getItems();
-    _sortProducts(sort, data);
-    setProducts(data);
-  };
+    const sortedData = _sortProducts(sort, data);
+    setProducts(sortedData);
+  }, [sort]);
 
-  const addProduct = async (newProduct: Omit<Product, "id">) => {
-    await createItem(newProduct);
-    fetchProducts();
-  };
-
-  const updateProduct = async (
-    updatedProduct: { id: number } & Partial<Product>
-  ) => {
-    updateItem(updatedProduct.id, updatedProduct);
-    setdraftProduct(undefined);
-  };
-
-  const deleteProduct = async (id: number) => {
-    await deleteItem(id);
-    fetchProducts();
-  };
-
-  const filterProducts = async (query: string) => {
-    if (query === "") {
+  const addProduct = React.useCallback(
+    async (newProduct: Omit<Product, "id">) => {
+      await createItem(newProduct);
       fetchProducts();
-      return;
-    }
-    const data = await getItems();
-    const filteredList = data.filter(
-      (product) =>
-        product.name.toLowerCase().includes(query) ||
-        product.description?.toLowerCase().includes(query)
-    );
-    setProducts(filteredList);
-  };
+    },
+    [fetchProducts]
+  );
 
-  const _sortProducts = (newsort: string, items: Product[]) => {
-    setSort(newsort);
-    let sortedList;
-    switch (newsort) {
-      case "Name":
-        sortedList = items.toSorted(sortByName);
-        break;
-      case "Date":
-        sortedList = items.toSorted(sortByDate);
-        break;
-      case "Price":
-        sortedList = items.toSorted(sortByPrice);
-        break;
-      default:
-        sortedList = [...items];
-    }
-    setProducts(sortedList);
-  };
+  const updateProduct = React.useCallback(
+    async (updatedProduct: { id: number } & Partial<Product>) => {
+      await updateItem(updatedProduct.id, updatedProduct);
+      setdraftProduct(undefined);
+      fetchProducts();
+    },
+    [fetchProducts]
+  );
 
-  const sortProducts = (newsort: string) => {
-    _sortProducts(newsort, products);
-  };
+  const deleteProduct = React.useCallback(
+    async (id: number) => {
+      await deleteItem(id);
+      fetchProducts();
+    },
+    [fetchProducts]
+  );
+
+  const filterProducts = React.useCallback(
+    async (query: string) => {
+      if (query === "") {
+        fetchProducts();
+        return;
+      }
+      const data = await getItems();
+      const filteredList = data.filter(
+        (product) =>
+          product.name.toLowerCase().includes(query) ||
+          product.description?.toLowerCase().includes(query)
+      );
+      setProducts(filteredList);
+    },
+    [fetchProducts]
+  );
+
+  const sortProducts = React.useCallback(
+    (newsort: string) => {
+      setSort(newsort);
+      const sortedList = _sortProducts(newsort, [...products]);
+      setProducts(sortedList); // Update state with the sorted list
+    },
+    [products]
+  );
+
+  const value = React.useMemo(
+    () => ({
+      products,
+      addProduct,
+      deleteProduct,
+      fetchProducts,
+      filterProducts,
+      openProductForm,
+      setOpenProductForm,
+      updateProduct,
+      editProduct,
+      draftProduct,
+      sortProducts,
+      sort,
+    }),
+    [
+      products,
+      addProduct,
+      deleteProduct,
+      fetchProducts,
+      filterProducts,
+      openProductForm,
+      updateProduct,
+      draftProduct,
+      sortProducts,
+      sort,
+    ]
+  );
 
   return (
-    <ProductContext.Provider
-      value={{
-        products,
-        addProduct,
-        deleteProduct,
-        fetchProducts,
-        filterProducts,
-        openProductForm,
-        setOpenProductForm,
-        updateProduct,
-        editProduct,
-        draftProduct,
-        sortProducts,
-        sort,
-      }}
-    >
-      {children}
-    </ProductContext.Provider>
+    <ProductContext.Provider value={value}>{children}</ProductContext.Provider>
   );
 };
 

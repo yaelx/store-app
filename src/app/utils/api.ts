@@ -45,12 +45,21 @@ export const createItem = async (product: Omit<Product, "id">): Promise<Product>
 };
 
 // Update a product by ID
-export const updateItem = async (id: number, updatedProduct: Partial<Product>): Promise<Product> => {
+export const updateItem = async (id: number, updatedProduct: Partial<Product>): Promise<Product|null> => {
     // const response = await api.put<Product>(`/products/${id}`, updatedProduct);
     // return response.data;
-    const product = await getItemById(id);
-    const updated = {...product, updatedProduct} as Product;
+    const productsCopy = await getItems();
+     console.log("Before update:", productsCopy);
+    const idx = productsCopy.findIndex((product) => product.id === id);
+    if (idx > -1){
+    const updated = {...productsCopy[idx], ...updatedProduct} as Product;
+    productsCopy[idx] = updated;
+    console.log("Updated product:", updated);
+    setProductsToLocalStorage(productsCopy);
     return updated;
+    }
+    console.warn("Product not found for ID:", id);
+    return null;
 };
 
 // Delete a product by ID

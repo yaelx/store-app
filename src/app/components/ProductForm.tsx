@@ -42,15 +42,13 @@ export const ProductForm = () => {
   } = useProductContext();
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const initialState = !!draftProduct
-    ? draftProduct
-    : {
-        name: "",
-        description: "",
-        price: 0,
-        creation_date: "",
-      };
-  console.log(draftProduct);
+  const initialState = draftProduct || {
+    name: "",
+    description: "",
+    price: 0,
+    creation_date: "",
+  };
+  console.log("draftProduct: ", draftProduct);
 
   const saveProduct = async (
     values: Partial<Product> | Omit<Product, "id">
@@ -75,6 +73,8 @@ export const ProductForm = () => {
     setOpenProductForm(false);
   };
 
+  if (!openProductForm) return null;
+
   return (
     <Box
       sx={{
@@ -86,7 +86,7 @@ export const ProductForm = () => {
       }}
     >
       {openProductForm && (
-        <Paper elevation={3}>
+        <Paper elevation={3} sx={{ height: 500 }}>
           <Box
             sx={{
               display: "flex",
@@ -97,7 +97,7 @@ export const ProductForm = () => {
           >
             <Typography
               variant="subtitle1"
-              sx={{ paddingLeft: 3, paddingTop: 2 }}
+              sx={{ paddingLeft: 3, paddingTop: 2, fontWeight: 600 }}
             >
               {draftProduct
                 ? `${draftProduct.name} details`
@@ -134,7 +134,7 @@ export const ProductForm = () => {
                   width: "80%",
                   flex: 1,
                   flexDirection: "column",
-                  height: 350,
+                  height: "100%",
                 }}
               >
                 <StyledLabel htmlFor="url">Image</StyledLabel>
@@ -198,8 +198,7 @@ export const ProductForm = () => {
                         size="small"
                         sx={{
                           width: 80,
-                          padding: 0,
-                          paddingLeft: 1,
+                          padding: "0px 8px",
                           margin: 0,
                         }}
                         {...field}
